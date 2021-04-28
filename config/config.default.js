@@ -16,7 +16,7 @@ module.exports = appInfo => {
   config.keys = appInfo.name + '_1619507994505_3900';
 
   // add your middleware config here
-  config.middleware = [];
+  config.middleware = ['errorHandler'];
 
   config.mysql = {
     client: {
