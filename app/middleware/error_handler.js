@@ -1,3 +1,5 @@
+const errorTypes = require('../constant/errorTypes')
+
 module.exports = () => {
   return async function errorHandler(ctx, next) {
     try {
@@ -9,23 +11,23 @@ module.exports = () => {
       const status = err.status || 500;
       // 生产环境时 500 错误的详细错误内容不返回给客户端，因为可能包含敏感信息
       const err_msg = status === 500 && ctx.app.config.env === 'prod'
-        ? 'Internal Server Error'
+        ? errorTypes.INTERNAL_SERVER_ERROR
         : err.message;
+
+      if (status === 422) {
+        // validate参数检验插件抛出异常时，error对象的状态码为422
+        err.message = errorTypes.INTERNAL_SERVER_ERROR
+      }
 
       // 从 error 对象上读出各个属性，设置到响应中
       ctx.status = status;
       ctx.body = {
         meta: {
-          status: status,
-          msg: err_msg,
+          status,
+          msg: err.message,
           detail_msg: err.errors
         }
       }
-      // ctx.body = { err_msg };
-      // if (status === 422) {
-      //   ctx.body.detail = err.errors;
-      // }
-
     }
   };
 };

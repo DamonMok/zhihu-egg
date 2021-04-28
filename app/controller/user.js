@@ -1,6 +1,8 @@
 'use strict';
 const Controller = require('egg').Controller;
 
+const errorTypes = require('../constant/errorTypes')
+
 
 const registerRule = {
   userName: {
@@ -21,7 +23,7 @@ class UserController extends Controller {
     let { userName, password } = ctx.request.body
     password = ctx.helper.handlePassword(password)
 
-    // ctx.throw(422, '奇怪的错误')
+    ctx.throw(409, errorTypes.USER_ALREADY_EXISTS)
 
     ctx.body = `${userName}: ${password}`
   }
