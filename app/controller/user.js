@@ -5,7 +5,10 @@ const Controller = require('egg').Controller;
 class UserController extends Controller {
   async register() {
     const { ctx } = this
-    const { userName, password } = ctx.request.body
+    let { userName, password } = ctx.request.body
+    password = ctx.helper.handlePassword(password)
+
+
     ctx.body = `${userName}: ${password}`
   }
 }
