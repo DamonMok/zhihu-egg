@@ -16,7 +16,7 @@ module.exports = () => {
 
       if (status === 422) {
         // validate参数检验插件抛出异常时，error对象的状态码为422
-        err.message = errorTypes.INTERNAL_SERVER_ERROR
+        err.message = errorTypes.INCORRECT_REQUEST_PARAMETERS
       }
 
       // 从 error 对象上读出各个属性，设置到响应中

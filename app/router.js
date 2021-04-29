@@ -5,5 +5,5 @@
  */
 module.exports = app => {
   const { router, controller } = app;
-  router.post('/user', controller.user.register);
+  router.resources('/user', app.middleware.user.verifyLogin, controller.user);
 };
