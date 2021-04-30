@@ -19,16 +19,11 @@ class UserController extends Controller {
     // 新增用户到数据库
     const result = await ctx.service.user.create(userName, password)
     if (result.affectedRows === 1) {
-      ctx.status = 201
-      ctx.body = {
-        user_id: result.insertId,
-        meta: {
-          status: 201,
-          msg: "注册用户成功。"
-        }
-      }
+      const userId = result.insertId
+      ctx.helper.success(201, userId, '注册用户成功。')
     } else {
-      ctx.throw()
+      // 插入数据库失败
+      ctx.throw(500, errorTypes.DATABASE_ERROR)
     }
   }
 }

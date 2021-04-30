@@ -13,18 +13,38 @@ const registerRule = {
 }
 
 // 用户注册前验证
-const verifyLogin = async (ctx, next) => {
+const verifyRegister = async (ctx, next) => {
   // 1.参数校验
   ctx.validate(registerRule, ctx.request.body)
   const { userName } = ctx.request.body
 
   // 2.判断用户是否已存在
-  const users = await ctx.service.user.getUserByUserName(userName)
-  if (users.length > 0) ctx.throw(409, errorTypes.USER_ALREADY_EXISTS)
+  const [user] = await ctx.service.user.getUserByUserName(userName)
+  if (user) ctx.throw(409, errorTypes.USER_ALREADY_EXISTS)
+
+  await next()
+}
+
+// 用户登录前验证
+const verifyLogin = async (ctx, next) => {
+  // 1.参数校验
+  ctx.validate(registerRule, ctx.request.body)
+  const { userName, password } = ctx.request.body
+
+  // 2.判断用户是否存在
+  const [user] = await ctx.service.user.getUserByUserName(userName)
+  if (!user) ctx.throw(400, errorTypes.USER_DOSE_NOT_EXIST)
+
+  // 3.判断密码是否正确
+  const finalPassword = ctx.helper.handlePassword(password)
+  if (finalPassword !== user.password) ctx.throw(400, errorTypes.INCORRECT_USERNAME_OR_PASSWORD)
+
+  ctx.user = user
 
   await next()
 }
 
 module.exports = {
+  verifyRegister,
   verifyLogin
 }

@@ -38,10 +38,17 @@ module.exports = appInfo => {
   }
 
   config.security = {
+    // 关闭csrf防护
     csrf: {
       enable: false
     },
   }
+
+  // token认证
+  config.jwt = {
+    secret: "S%#KDHJK_+SSEW{FV>]KWw.s1kdP~S\|<,SLWWITYOB_(&^$@R",
+    expiresIn: 10
+  };
 
   // add your user config here
   const userConfig = {

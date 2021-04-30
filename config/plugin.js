@@ -6,7 +6,13 @@ exports.mysql = {
   package: 'egg-mysql',
 };
 
+// 数据校验
 exports.validate = {
   enable: true,
   package: 'egg-validate',
+};
+
+exports.jwt = {
+  enable: true,
+  package: "egg-jwt"
 };
