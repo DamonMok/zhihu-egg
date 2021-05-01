@@ -11,7 +11,7 @@ class UserService extends Service {
    */
   async getUserByUserName(userName) {
     const statement = 'SELECT * FROM `users` WHERE userName = ?;'
-    const result = await this.ctx.app.mysql.query(statement, [userName])
+    const [result] = await this.ctx.app.mysql.query(statement, [userName])
 
     return result
   }
@@ -24,7 +24,7 @@ class UserService extends Service {
    */
   async create(userName, password) {
     const statement = 'INSERT INTO `users` (nickName, userName, password) VALUES (?, ?, ?);'
-    const result = await this.ctx.app.mysql.query(statement, [userName, userName, password])
+    const [result] = await this.ctx.app.mysql.query(statement, [userName, userName, password])
 
     return result
   }

@@ -19,7 +19,7 @@ const verifyRegister = async (ctx, next) => {
   const { userName } = ctx.request.body
 
   // 2.判断用户是否已存在
-  const [user] = await ctx.service.user.getUserByUserName(userName)
+  const user = await ctx.service.user.getUserByUserName(userName)
   if (user) ctx.throw(409, errorTypes.USER_ALREADY_EXISTS)
 
   await next()
@@ -32,7 +32,7 @@ const verifyLogin = async (ctx, next) => {
   const { userName, password } = ctx.request.body
 
   // 2.判断用户是否存在
-  const [user] = await ctx.service.user.getUserByUserName(userName)
+  const user = await ctx.service.user.getUserByUserName(userName)
   if (!user) ctx.throw(400, errorTypes.USER_DOSE_NOT_EXIST)
 
   // 3.判断密码是否正确
