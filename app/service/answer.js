@@ -15,6 +15,17 @@ class AnswerService extends Service {
 
     return result
   }
+
+  /**
+   * 添加答案到数据库
+   * @param {用户id} userId 
+   * @param {问题标题} title 
+   * @returns 
+   */
+  async createAnswer(content, userId, questionId) {
+    const statement = 'INSERT INTO `answers` (content, user_id, question_id) VALUES (?, ?, ?);'
+    return await this.app.mysql.query(statement, [content, userId, questionId])
+  }
 }
 
 module.exports = AnswerService;

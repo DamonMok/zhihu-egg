@@ -13,9 +13,10 @@ module.exports = app => {
 
   // 问题
   router.get('/questions', controller.question.index)  // 列表
-  router.post('/questions', app.middleware.auth.verifyToken, controller.question.create)  // 发表
+  router.post('/questions', app.middleware.auth.verifyToken, controller.question.create)  // 发表问题
 
   // 答案
   router.get('/answers', controller.anwser.index)  // 列表
+  router.post('/answers', app.middleware.auth.verifyToken, controller.anwser.create)  // 发表答案
 
 };

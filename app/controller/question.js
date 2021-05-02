@@ -3,6 +3,9 @@
 const Controller = require('egg').Controller;
 
 
+const errorTypes = require('../constant/errorTypes')
+
+
 // 获取问题列表数据校验规则
 const questionListRule = {
   pageNum: {
@@ -59,7 +62,11 @@ class QuestionController extends Controller {
       ctx.helper.success(409, question, '问题已存在。')
     } else {
       // 问题不存在
-      await ctx.service.question.createQuestion(userId, title)
+      try {
+        await ctx.service.question.createQuestion(userId, title)
+      } catch (error) {
+        ctx.throw(500, errorTypes.DATABASE_ERROR)
+      }
       ctx.helper.success(201, null, '发表问题成功。')
     }
   }

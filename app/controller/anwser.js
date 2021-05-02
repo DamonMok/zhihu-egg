@@ -2,6 +2,8 @@
 
 const Controller = require('egg').Controller;
 
+const errorTypes = require('../constant/errorTypes')
+
 
 // 获取答案列表数据校验规则
 const answersListRule = {
@@ -12,6 +14,19 @@ const answersListRule = {
   pageSize: {
     type: 'int',
     min: 1
+  }
+}
+
+// 添加答案数据校验规则
+const addAnswerRule = {
+  content: {
+    type: 'string',
+  },
+  userId: {
+    type: 'int'
+  },
+  questionId: {
+    type: 'int',
   }
 }
 
@@ -29,6 +44,26 @@ class AnwserController extends Controller {
 
     // 4.响应数据
     this.ctx.helper.success(200, answers, '获取答案列表数据成功。')
+  }
+
+  // 发表答案
+  async create() {
+    const { ctx } = this
+    // 1.参数校验
+    ctx.validate(addAnswerRule, ctx.request.body)
+
+    // 2.解构参数
+    const { content, userId, questionId } = ctx.request.body
+
+    // 3.响应数据
+    try {
+      await ctx.service.answer.createAnswer(content, userId, questionId)
+    } catch (error) {
+      ctx.throw(500, errorTypes.DATABASE_ERROR)
+    }
+
+    // 4.响应数据
+    ctx.helper.success(201, null, '发表答案成功。')
   }
 }
 
