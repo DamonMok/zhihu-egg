@@ -47,7 +47,7 @@ module.exports = appInfo => {
   // token认证
   config.jwt = {
     secret: "S%#KDHJK_+SSEW{FV>]KWw.s1kdP~S\|<,SLWWITYOB_(&^$@R",
-    expiresIn: 10
+    expiresIn: 24 * 60 * 60
   };
 
   // add your user config here

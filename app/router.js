@@ -11,6 +11,8 @@ module.exports = app => {
   // 用户(登录)
   router.post('/login', app.middleware.user.verifyLogin, controller.auth.login)
 
-  // 问题(列表)
-  router.resources('/question', controller.question)
+  // 问题
+  router.get('/question', controller.question.index)  // 列表
+  router.post('/question', app.middleware.auth.verifyToken, controller.question.create)  // 发表
+
 };
