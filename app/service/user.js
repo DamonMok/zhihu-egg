@@ -28,6 +28,19 @@ class UserService extends Service {
 
     return result
   }
+
+  /**
+   * 获取用户列表
+   * @param {偏移量} offset 
+   * @param {每页多少条} size 
+   * @returns 
+   */
+  async getUserList(offset, size) {
+    const statement = 'SELECT * FROM `users` LIMIT ?, ?;'
+    const result = await this.ctx.app.mysql.query(statement, [offset, size])
+
+    return result
+  }
 }
 
 module.exports = UserService;

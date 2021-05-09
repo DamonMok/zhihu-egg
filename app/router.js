@@ -6,7 +6,8 @@
 module.exports = app => {
   const { router, controller } = app;
   // 用户(注册、)
-  router.resources('/users', app.middleware.user.verifyRegister, controller.user);
+  router.post('/users', app.middleware.user.verifyRegister, controller.user.create);
+  router.get('/users', controller.user.index)
 
   // 用户(登录)
   router.post('/login', app.middleware.user.verifyLogin, controller.auth.login)
