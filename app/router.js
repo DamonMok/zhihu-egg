@@ -5,9 +5,9 @@
  */
 module.exports = app => {
   const { router, controller } = app;
-  // 用户(注册、)
+  // 用户(注册、列表)
   router.post('/users', app.middleware.user.verifyRegister, controller.user.create);
-  router.get('/users', controller.user.index)
+  router.get('/users', app.middleware.auth.verifyToken, controller.user.index)
 
   // 用户(登录)
   router.post('/login', app.middleware.user.verifyLogin, controller.auth.login)
@@ -19,5 +19,8 @@ module.exports = app => {
   // 答案
   router.get('/answers', controller.anwser.index)  // 列表
   router.post('/answers', app.middleware.auth.verifyToken, controller.anwser.create)  // 发表答案
+
+  // 标签
+  router.post('/label', app.middleware.auth.verifyToken, controller.label.create)  // 新增标签
 
 };

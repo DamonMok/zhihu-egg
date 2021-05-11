@@ -3,19 +3,10 @@
 const Controller = require('egg').Controller;
 
 
-// 获取问题列表数据校验规则
-const questionListRule = {
-  pageNum: {
-    type: 'int',
-    min: 1
-  },
-  pageSize: {
-    type: 'int',
-    min: 1
-  }
-}
-
 class AuthController extends Controller {
+  /**
+   * 登录
+   */
   async login() {
     const { ctx, app } = this
     const { id, userName } = ctx.user
