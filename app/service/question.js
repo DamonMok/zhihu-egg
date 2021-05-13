@@ -24,7 +24,6 @@ class QuestionService extends Service {
   async checkQuestionAlreadyExists(title) {
     const statement = 'SELECT * FROM `questions` where title = ?;'
     return await this.app.mysql.query(statement, [title])
-
   }
 
   /**
@@ -36,6 +35,24 @@ class QuestionService extends Service {
   async createQuestion(userId, title) {
     const statement = 'INSERT INTO `questions` (user_id, title) values (?, ?);'
     return await this.app.mysql.query(statement, [userId, title])
+  }
+
+
+  async getQuestionById(id) {
+    const statement = `
+      SELECT 
+        q.title, q.createAt,
+        JSON_OBJECT('id', u.id, 'name', u.nickName) user,
+        JSON_ARRAYAGG(JSON_OBJECT('id', l.id, 'name', l.name)) labels
+      FROM questions q 
+      LEFT JOIN users u ON u.id = q.user_id
+      LEFT JOIN question_label ql ON q.id = ql.question_id
+      LEFT JOIN labels l ON ql.label_id = l.id 
+      WHERE q.id = ?;  
+    `
+
+    const result = await this.app.mysql.query(statement, [id])
+    return result
   }
 }
 

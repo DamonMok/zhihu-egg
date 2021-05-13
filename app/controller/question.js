@@ -28,6 +28,13 @@ const addQuestionRule = {
   }
 }
 
+// 问题详情数据校验规则
+const questionDetailRule = {
+  id: {
+    type: 'int'
+  }
+}
+
 class QuestionController extends Controller {
   // 分页获取问题列表数据
   async index() {
@@ -69,6 +76,20 @@ class QuestionController extends Controller {
       }
       ctx.helper.success(201, null, '发表问题成功。')
     }
+  }
+
+  // 问题详情
+  async show() {
+    // 1.获取参数
+    const { id } = this.ctx.params
+
+    // 2.查库获取数据
+    const [result] = await this.service.question.getQuestionById(id)
+    result.user = JSON.parse(result.user)
+    result.labels = JSON.parse(result.labels)
+
+    // 3.响应 
+    this.ctx.helper.success(200, result, '获取问题详情成功。')
   }
 }
 
