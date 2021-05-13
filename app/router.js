@@ -16,6 +16,7 @@ module.exports = app => {
   router.get('/questions', controller.question.index)  // 列表
   router.post('/questions', app.middleware.auth.verifyToken, controller.question.create)  // 发表问题
   router.get('/questions/:id', app.middleware.auth.verifyToken, controller.question.show)  // 问题详情
+  router.post('/questions/:id/labels', app.middleware.question.verifyLabels, controller.question.addLabels)
 
   // 答案
   router.get('/answers', controller.anwser.index)  // 列表

@@ -91,6 +91,25 @@ class QuestionController extends Controller {
     // 3.响应 
     this.ctx.helper.success(200, result, '获取问题详情成功。')
   }
+
+  // 给问题添加标签
+  async addLabels() {
+    // 1.获取参数
+    const { id } = this.ctx.params
+    const labels = this.ctx.labels
+
+    // 2.判断问题是否已经包含该标签
+    for (const label of labels) {
+      const result = await this.ctx.service.question.relationshipBetweenQuestion2Label(id, label.id)
+      if (!result) {
+        // 不包含，添加到关系表
+        const res = await this.ctx.service.question.addLabel(id, label.id)
+      }
+    }
+
+    // 3.返回响应
+    this.ctx.helper.success(201, null, '添加标签成功。')
+  }
 }
 
 module.exports = QuestionController;

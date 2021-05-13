@@ -37,7 +37,11 @@ class QuestionService extends Service {
     return await this.app.mysql.query(statement, [userId, title])
   }
 
-
+  /**
+   * 获取问题详情
+   * @param {问题id} id 
+   * @returns 
+   */
   async getQuestionById(id) {
     const statement = `
       SELECT 
@@ -53,6 +57,24 @@ class QuestionService extends Service {
 
     const result = await this.app.mysql.query(statement, [id])
     return result
+  }
+
+  /**
+   * 判断问题是否已经包含该标签
+   * @param {问题id} questionId 
+   * @param {标签id} labelId 
+   * @returns 
+   */
+  async relationshipBetweenQuestion2Label(questionId, labelId) {
+    const statement = 'SELECT * FROM question_label WHERE question_id = ? AND label_id = ?;'
+    const [result] = await this.app.mysql.query(statement, [questionId, labelId])
+    return result
+  }
+
+
+  async addLabel(questionId, labelId) {
+    const statement = 'INSERT INTO question_label (question_id, label_id) VALUES (?, ?);'
+    return await this.app.mysql.query(statement, [questionId, labelId])
   }
 }
 
