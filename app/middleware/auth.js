@@ -11,11 +11,11 @@ const verifyToken = async (ctx, next) => {
   try {
     const token = ctx.request.header.authorization.replace('Bearer ', '')
     const data = ctx.app.jwt.verify(token, secret)
+    ctx.userId = data.id
   } catch (error) {
     // token过期/无效
     ctx.throw(401, errorTypes.UNAUTHORIZED)
   }
-
   await next()
 }
 

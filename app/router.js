@@ -25,4 +25,8 @@ module.exports = app => {
   // 标签
   router.post('/label', app.middleware.auth.verifyToken, controller.label.create)  // 新增标签
 
+  // 文件
+  router.post('/upload/avatar', app.middleware.auth.verifyToken, controller.file.uploadAvatar)  // 上传用户头像
+  router.post('/users/:userId/avatar', app.middleware.auth.verifyToken, app.middleware.file.handleAvatar, controller.file.saveAvatar)  // 设置头像
+
 };

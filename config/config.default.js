@@ -2,6 +2,9 @@
 
 'use strict';
 
+const path = require('path')
+const os = require('os')
+
 /**
  * @param {Egg.EggAppInfo} appInfo app info
  */
@@ -48,7 +51,19 @@ module.exports = appInfo => {
   config.jwt = {
     secret: "S%#KDHJK_+SSEW{FV>]KWw.s1kdP~S\|<,SLWWITYOB_(&^$@R",
     expiresIn: 24 * 60 * 60
-  };
+  }
+
+  // 文件上传插件
+  config.multipart = {
+    mode: 'file',
+    fileSize: '10mb',
+    tmpdir: path.join(os.tmpdir(), appInfo.name)
+  }
+
+  config.appConstant = {
+    appHost: 'http://localhost',
+    appPort: 7001
+  }
 
   // add your user config here
   const userConfig = {
